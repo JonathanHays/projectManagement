@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<!--
+created by: Jonathan Hays
+ -->
+<html xmlns:th="http://www.thymeleaf.org/">
+
+<head th:replace="fragments :: head"></head>
+
+<body>
+
+<div class="sticky-top">
+    <div th:replace="fragments :: pageTitle"></div>
+    <div th:replace="fragments :: navBar"></div>
+
+
+    <div class="container">
+
+        <div class="row" style="margin-top:3%;">
+
+            <div class="form-group centerAlign formTitle">
+                <a th:href="'/projects/details/'+${project.id}" class="link">
+                    <h3 th:text="${project.name}" style="color:black;"></h3>
+                </a>
+            </div>
+
+
+        </div>
+
+        <div class="row boxShadow backgroundColor" style="margin-top:1%;border-radius:15px;" >
+            <table class="table table-striped displayTable">
+                <tr class="tableHeader">
+                    <th>Epic</th>
+                    <th>Feature</th>
+                    <th>Task</th>
+                    <th style="text-align:center;">Priority</th>
+                    <th style="text-align:center;">Size</th>
+                    <th style="text-align:center;">Status</th>
+                    <th style="text-align:center;">Details</th>
+                </tr>
+                <tr th:each="item : ${tasks}">
+                    <td >
+                        <a th:href="@{/epics/details/{id}(id=${item.feature.epic.id})}"  style="color:white;">
+                            <p th:text="${item.feature.epic.name}"></p>
+                        </a>
+                    </td>
+                    <td >
+                        <a th:href="@{/feature/details/{id}(id=${item.feature.id})}"  style="color:white;">
+                            <p th:text="${item.feature.name}"></p>
+                        </a>
+                    </td>
+                    <td >
+                        <a th:href="@{/task/details/{id}(id=${item.id})}" style="color:white;">
+                            <p th:text="${item.name}"></p>
+                        </a>
+                    </td>
+                    <td>
+                        <div th:class="'box-'+${item.priority}" style="border-radius:5px;">
+                            <p style="text-align:center;padding: 3px;" th:text="${item.priority.displayName}"></p>
+                        </div>
+                    </td>
+                    <td style="text-align:center;" th:text="${item.size.displayName}"></td>
+                    <td style="text-align:center;" th:text="${item.status.displayName}"
+                        th:class="${item.status}"></td>
+                    <td style="text-align:center;">
+                        <a th:href="@{/tasks/details/{id}(id=${item.id})}">
+                            <button class="btn btn-primary btn-outline-light" style="text-align: center;height: 30px;padding-top: 2px;">
+                                Details
+                            </button>
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+    </div>
+
+</div>
+<div th:replace="fragments :: copyright"></div>
+</body>

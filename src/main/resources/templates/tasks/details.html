@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<!--
+created by: Jonathan Hays
+ -->
+<html xmlns:th="http://www.thymeleaf.org/">
+
+<head th:replace="fragments :: head"></head>
+
+<body>
+
+    <div class="sticky-top">
+        <div th:replace="fragments :: pageTitle"></div>
+        <div th:replace="fragments :: navBar"></div>
+    </div>
+
+
+    <div class="container-fluid">
+        <div class="col-12" style="margin-top:1%">
+            <div class="row">
+
+
+                <a th:href="'/projects/details/'+${task.feature.epic.project.id}" class="link text-center"
+                    style="color:#333333;">
+                    <h5 th:text="${task.feature.epic.project.name}"></h5>
+                </a>
+                <p style="color: #333333;">
+                    &nbsp; - &nbsp;
+                </p>
+                <a th:href="'/epics/details/'+${task.feature.epic.id}" class="link text-center" style="color:#333333;">
+                    <h5 th:text="${task.feature.epic.name}"></h5>
+                </a>
+                <p style="color: #333333;">
+                    &nbsp; - &nbsp;
+                </p>
+                <a th:href="'/feature/details/'+${task.feature.id}" class="link text-center" style="color:#333333;">
+                    <h5 th:text="${task.feature.name}"></h5>
+                </a>
+                <a th:href="'/kanban/feature/'+${task.feature.id}" class="link text-center"
+                    style="color:#333333;float:right;margin-left: auto;margin-right: 1%;">
+                    <h5>Kanban Board</h5>
+                </a>
+            </div>
+        </div>
+        <div class="row" style="margin-top:1%">
+            <div class="col-sm-12 col-lg-4">
+                <form method="post" class="form boxShadow backgroundColor"
+                    style="border-radius: 10px;padding-bottom: 3%;" action="/tasks/update">
+                    <div class="form-group centerAlign formTitle">
+                        <p>Task Details</p>
+                    </div>
+                    <div class="col-12 m-auto">
+                        <input type="hidden" th:field="${task.id}" readonly>
+                        <input type="hidden" th:field="${task.createdAt}" readonly>
+                        <input type="hidden" th:field="${task.createdBy}" readonly>
+                        <input type="hidden" th:field="${task.feature}" readonly>
+
+                        <div class="form-group">
+                            <label style="width: 100%;">
+                                Name:
+                                <input th:field="${task.name}" class="form-control">
+                            </label>
+                            <p class="error" th:errors="${task.name}"></p>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-left: 0;margin-right: 0;">
+                        <div class="col-4 m-auto">
+                            <div class="form-group">
+                                <label style="width: 100%;">
+                                    Status:
+                                    <select th:field="${task.status}" class="custom-select">
+                                        <option th:each="type : ${statuses}" th:value="${type}"
+                                            th:text="${type.displayName}"></option>
+                                    </select>
+                                </label>
+    
+                            </div>
+                        </div>
+
+                        <div class="col-4 m-auto">
+                            <div class="form-group">
+                                <label style="width: 100%;">
+                                    Priority:
+                                    <select th:field="${task.priority}" class="custom-select">
+                                        <option th:each="type : ${priority}" th:value="${type}"
+                                            th:text="${type.displayName}"></option>
+                                    </select>
+                                </label>
+    
+                            </div>
+                        </div>
+                        <div class="col-4 m-auto">
+                            <div class="form-group">
+                                <label style="width: 100%;">
+                                    Size:
+                                    <select th:field="${task.size}" class="custom-select">
+                                        <option th:each="type : ${size}" th:value="${type}" th:text="${type.displayName}">
+                                        </option>
+                                    </select>
+                                </label>
+    
+                            </div>
+                        </div>
+                    </div>
+                  
+                    
+                    <div class="col-12 m-auto">
+                        <div class="form-group">
+                            <label>
+                                Description:
+                                <textarea name="description" cols="33" rows="2"
+                                    th:text="${task.description}"></textarea>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-12 m-auto">
+                        <div class="form-group">
+                            <input type='submit' value='Update' class="btn btn-primary btn-outline-light">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-sm-12 col-lg-8">
+                <div class="row" style="margin-left: 0;margin-right: 0;">
+                    <div class="col-sm-12 col-lg-8 boxShadow backgroundColor" style="border-radius: 10px;max-height: 150px;">
+                        <form method="post" class="form" style="border-radius: 10px;padding-bottom: 3%;"
+                            action="/file/create" id="fileCreateForm" enctype="multipart/form-data">
+                            
+                            <div class="row">
+                                <div class="form-group centerAlign formTitle">
+                                    <p style="margin-bottom: 0;">Add A File</p>
+                                </div>
+                            </div>
+                            <div class="col-12 m-auto">
+                                <div class="row">
+                                    <div class="col-9">
+                                        <div class="form-group">
+                                            <input type="hidden" id="taskIdFile" name="taskId" readonly
+                                                th:value="${task.getId()}">
+                                            Select a file (size cannot exceed 1MB): <input type="file" name="image"
+                                                accept="image/png, image/jpeg" id="imageInput" />
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="form-group">
+                                            <input style="margin-top: 20px;" type='submit' value='Submit' class="btn btn-primary btn-outline-light">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </form>
+                    </div>
+                    <div class="col-sm-12 col-lg-3 offset-lg-1 boxShadow backgroundColor" style="border-radius: 10px;max-height: 150px;overflow: auto;">
+                        <div class="form-group centerAlign formTitle">
+                            <button onclick="showImageModal()" style="margin-bottom: -10px;font-size: 22px;padding:0px;margin-top: -10px;" class="btn btn-link">View Files</button>
+                            <!-- <p style="margin-bottom: -10px;">View Files</p> -->
+                        </div>
+                        <table class="table table-striped" style="margin-top: -20px;">
+                            <tr th:each="item : ${task.getFileList()}">
+                                <td style="color:white;padding:0;text-align: center;"> 
+                                    <a  style="color:white;" th:href="@{${item.getFilePath()}}" th:text="${item.file}" target="_blank"></a>
+                                </td>
+                            </tr>
+                        </table>
+                   
+                    </div>
+                </div>
+                <div class="col-12 boxShadow backgroundColor" style="border-radius: 10px; margin-top:2%;">
+                    <div class="row" style="padding-top: 1%;">
+                        <div class="col-10 m-auto">
+                            <form th:action="@{/notes/task/create}" method="post">
+                                <div class="row">
+                                    <div>
+                                        <input type="hidden" name="task" th:value="${task.id}" readonly>
+                                    </div>
+                                    <p>
+                                        <label for="notes" id="notesLabel" class="formTitle">Enter Note:</label>
+                                        <textarea name="notes" id="notes" rows="1" cols="50"></textarea>
+                                    </p>
+                                    <input type="submit" value="Submit" class="btn btn-primary"
+                                        style="height:38px;margin-left:2%" />
+
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <table class="table table-striped displayTable">
+                            <tr class="tableHeader">
+                                <th style="width: 125px;">Date</th>
+                                <th style="width: 175px;">Created By</th>
+                                <th>Note</th>
+                            </tr>
+                            <tr th:each="item : ${task.getNotesList()}">
+                                <td th:text="${item.getDate()}"></td>
+                                <td th:text="${item.createdBy.firstName}+' '+${item.createdBy.lastName}"></td>
+                                <td th:text="${item.comment}"></td>
+
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    </div>
+    <div class="modal1" id="taskImageModal" th:fragment="taskImageModal" style="display:none;">
+        <div class="modal-content1">
+            <div class=" backgroundColor boxShadow" style="border-radius:15px;">
+                <!-- <span class="close1" id="imageClose">&times;</span> -->
+                <div id="carouselExampleIndicators" class="carousel slide" data-ride="">
+                    <div class="carousel-inner" role="listbox">
+    
+                        <div th:class="${iterStat.first}? (${iterStat.first}? 'carousel-item active') : 'carousel-item'"
+                             th:each="item,iterStat : ${task.getFileList()}">
+                            <a th:href="${item.getFilePath()}">
+                                <img class="d-block" th:src="${item.getFilePath()}"
+                                     th:alt="${item.file}" style="width:500px;margin:auto;padding:20px;">
+                            </a>
+    
+                        </div>
+    
+                    </div>
+                    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+    
+            </div>
+        </div>
+    </div>
+    <div th:replace="fragments :: copyright"></div>
+    <script th:src="@{/js/file.js}"></script>
+</body>
+
+</html>

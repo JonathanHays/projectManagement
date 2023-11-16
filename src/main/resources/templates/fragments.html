@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+
+<head th:fragment="head">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet"
+        href="http://education.launchcode.org/intro-to-professional-web-dev/otherdomains/hackerthemes.com/bootstrap-cheatsheet/bootstrap-4.3.1/dist/css/bootstrap.min.css" />
+    <script
+        src="http://education.launchcode.org/intro-to-professional-web-dev/otherdomains/hackerthemes.com/bootstrap-cheatsheet/bootstrap-4.3.1/jquery-slim.min.js"></script>
+    <script
+        src="http://education.launchcode.org/intro-to-professional-web-dev/otherdomains/hackerthemes.com/bootstrap-cheatsheet/bootstrap-4.3.1/popper.min.js"></script>
+    <script
+        src="http://education.launchcode.org/java-web-development/otherdomains/getbootstrap.com/docs/4.3/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+
+    <link th:href="@{/css/style.css}" rel="stylesheet" />
+    <title th:text="${title}"></title>
+</head>
+
+<body>
+
+    <div th:fragment="pageTitle" class='title'>
+        <div class="row">
+            <div class='pageTitle col-3'>
+                <img th:src="@{/images/lc-ed-logo.png}" style="width: -moz-available;">
+            </div>
+            <div class='pageTitle col-9' id='appName'>
+                <p style="padding-right: 20px;">Project Management</p>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div th:fragment="navBar">
+        <div style="background-color: #333333;margin:0;" class="row">
+            <div style="width: 93%;">
+                <ul style="height:50px;">
+
+                    <li style="margin-left:1%;" id="liHome"><a href="/">Home</a></li>
+                    <li style="margin-left:1%;" id="liProjects"><a href="/projects">Projects</a></li>
+                    <li style="margin-left:1%;" id="liKanban"><a href="/kanban">Kanban Board</a></li>
+                </ul>
+            </div>
+
+            <div class="dropdown" style="height:50px;width: 6%;">
+                <button class="dropbtn" style="height:50px;">
+                    <div style="background-color: white;width:35px;height:2px;margin-bottom: 7px;margin-left:15%;">
+                    </div>
+                    <div style="background-color: white;width: 35px;height:2px;margin-bottom: 7px;margin-left:15%;">
+                    </div>
+                    <div style="background-color: white;width: 35px;height:2px;margin-bottom: 7px;margin-left:15%;">
+                    </div>
+                </button>
+                <div class="dropdown-content">
+                    <a href="/logout">Log out</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div th:fragment="taskCard" class="card boxShadow" style="margin: 2%;color: black;height: 200px;">
+        <div class="card-body">
+            <h6 class="card-title text-center" th:text="${item.name}" style="font-weight:bold;"></h6>
+            <p style="font-weight:bold;margin: 0;">Priority: <span th:class="${item.priority}"
+                    style="font-weight: normal;" th:text="${item.priority.displayName}"></span></p>
+            <p style="font-weight:bold;margin: 0;">Size: <span style="font-weight: normal;"
+                    th:text="${item.size.displayName}"></span></p>
+            <p style="font-weight:bold;margin: 0;">Status: <span style="font-weight: normal;"
+                    th:text="${item.status.displayName}"></span></p>
+            <p style="font-weight:bold;margin: 0;max-height: 50px;overflow: auto;">Description: <span
+                    style="font-weight: normal;" th:text="${item.description}"></span></p>
+
+            <a th:href="'/tasks/details/'+${item.id}" class="card-link" th:text="'task-'+${item.id}"></a>
+            <img class="commentImg" th:src="@{/images/PaperClip-Red.png}" style="height: 20px;float: right;margin-left:5px;"
+            th:onclick="taskFileModal([[${item.id}]],[[${item.name}]])">
+            <img class="commentImg" th:src="@{/images/Clipboard.svg}" style="height: 20px;float: right;margin-left:5px;"
+                th:onclick="taskCommentModal([[${item.id}]],[[${item.name}]])">
+            <img class="commentImg" th:src="@{/images/Icon-Pencil02.svg}" style="height: 20px;float: right;"
+                 th:onclick="taskEditModal([[${item.id}]],[[${item.name}]],[[${item.size}]],[[${item.status}]],[[${item.priority}]],[[${item.description}]])">
+        </div>
+    </div>
+
+
+    <div class="modal1" id="taskEditModal" th:fragment="taskEditModal">
+        <div class="modal-content1">
+            <div class=" backgroundColor boxShadow" style="border-radius: 15px;">
+                <form method="post" class="form boxShadow backgroundColor"
+                      style="border-radius: 10px;padding-bottom: 3%;" action="/tasks/editKanban" id="taskEditForm">
+                    <div class="row" style="padding-top: 2%;">
+                        <div class="col-2">
+                            <span clase="close1" id="editClose"
+                                  style="padding-left: 20%; font-size: x-large;">&times;</span>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top:-40px">
+                        <div class="form-group centerAlign formTitle">
+                            <p style="margin-bottom: 0;">Edit Task</p>
+                        </div>
+                    </div>
+
+                    <div class="col-10 m-auto">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <input type="hidden" id="editUrlId" name="editUrlId" readonly>
+
+                                    <input type="hidden" id="editId" name="id" readonly>
+                                    <label style="width: 100%;">
+                                        Name:
+                                        <input th:field="${task.name}" class="form-control" id="editName">
+                                    </label>
+                                    <p class="error" th:errors="${task.name}"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                        
+                            <div class="col-4 m-auto">
+                                <div class="form-group">
+                                    <label style="width: 100%;">
+                                        Priority:
+                                        <select th:field="${task.priority}" class="custom-select" id="editPriority">
+                                            <option th:each="type : ${priority}" th:value="${type}"
+                                                    th:text="${type.displayName}"></option>
+                                        </select>
+                                    </label>
+
+                                </div>
+                            </div>
+                            <div class="col-4 m-auto">
+                                <div class="form-group">
+                                    <label style="width: 100%;">
+                                        Size:
+                                        <select th:field="${task.size}" class="custom-select" id="editSize">
+                                            <option th:each="type : ${size}" th:value="${type}"
+                                                    th:text="${type.displayName}"></option>
+                                        </select>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-4 m-auto">
+                                <div class="form-group">
+                                    <label style="width: 100%;">
+                                        Status:
+                                        <select th:field="${task.status}" class="custom-select" id="editStatus">
+                                            <option th:each="type : ${statuses}" th:value="${type}"
+                                                    th:text="${type.displayName}"></option>
+                                        </select>
+                                    </label>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 m-auto">
+                                <div class="form-group">
+                                    <label>
+                                        Description:
+                                        <textarea name="description" cols="50" rows="1" id="editDescription"></textarea>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-10 m-auto">
+                        <div class="form-group">
+                            <input type='submit' value='Update' class="btn btn-primary btn-outline-light">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="modal1" id="taskCommentModal" th:fragment="taskNoteModal">
+        <div class="modal-content1">
+            <div class=" backgroundColor boxShadow" style="border-radius: 15px;">
+                <form th:action="@{/notes/task/createKanban}" method="post" style="margin:35px;padding-bottom: 15px;"
+                    id="taskCommentForm">
+                    <span class="close1" id="commentClose">&times;</span>
+                    <h3 id="taskName" style="text-align: center;"></h3>
+                    <div class="row">
+                        <div>
+                            <input type="hidden" name="url" th:value="${url}" readonly>
+                            <input type="hidden" name="task" id="taskCommentId" readonly>
+                        </div>
+                        <p>
+                            <label for="notes" id="notesLabel" class="formTitle">Enter Note:</label>
+                            <textarea name="notes" id="notes" rows="2" cols="50"></textarea>
+                        </p>
+                        <input type="submit" value="Submit" class="btn btn-primary"
+                            style="height:38px;margin-left:2%" />
+
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal1" id="taskCreateModal" th:fragment="taskCreateModal">
+        <div class="modal-content1" style="margin-top:7%">
+            <div class=" backgroundColor boxShadow" style="border-radius: 15px;">
+                <form method="post" class="form boxShadow backgroundColor"
+                    style="border-radius: 10px;padding-bottom: 3%;" action="/tasks/createKanban" id="taskCreateForm">
+                    <div class="row" style="padding-top: 2%;">
+                        <div class="col-2">
+                            <span clase="close1" id="taskClose"
+                                style="padding-left: 20%; font-size: x-large;">&times;</span>
+                        </div>
+                        <div class="col-6 offset-1">
+                            <h3 id="featureName" class="text-center"></h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group centerAlign formTitle">
+                            <p style="margin-bottom: 0;">Create Task</p>
+                        </div>
+                    </div>
+
+                    <div class="col-10 m-auto">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <input type="hidden" id="urlId" name="urlId" readonly>
+
+                                    <input type="hidden" id="featureId" name="featureId" readonly>
+                                    <label style="width: 100%;">
+                                        Name:
+                                        <input th:field="${task.name}" class="form-control">
+                                    </label>
+                                    <p class="error" th:errors="${task.name}"></p>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                        <div class="row">
+                            <div class="col-4 m-auto">
+                                <div class="form-group">
+                                    <label style="width: 100%;">
+                                        Status:
+                                        <select th:field="${task.status}" class="custom-select">
+                                            <option th:each="type : ${statuses}" th:value="${type}"
+                                                th:text="${type.displayName}"></option>
+                                        </select>
+                                    </label>
+
+                                </div>
+                            </div>
+                            <div class="col-4 m-auto">
+                                <div class="form-group">
+                                    <label style="width: 100%;">
+                                        Priority:
+                                        <select th:field="${task.priority}" class="custom-select">
+                                            <option th:each="type : ${priority}" th:value="${type}"
+                                                th:text="${type.displayName}"></option>
+                                        </select>
+                                    </label>
+
+                                </div>
+                            </div>
+                            <div class="col-4 m-auto">
+                                <div class="form-group">
+                                    <label style="width: 100%;">
+                                        Size:
+                                        <select th:field="${task.size}" class="custom-select">
+                                            <option th:each="type : ${size}" th:value="${type}"
+                                                th:text="${type.displayName}"></option>
+                                        </select>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 m-auto">
+                                <div class="form-group">
+                                    <label>
+                                        Description:
+                                        <textarea name="description" cols="50" rows="1"></textarea>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-10 m-auto">
+                        <div class="form-group">
+                            <input type='submit' value='Create' class="btn btn-primary btn-outline-light">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal1" id="fileCreateModal" th:fragment="fileCreateModal">
+        <div class="modal-content1" style="margin-top:7%">
+            <div class=" backgroundColor boxShadow" style="border-radius: 15px;">
+                <form method="post" class="form boxShadow backgroundColor"
+                    style="border-radius: 10px;padding-bottom: 3%;" action="/file/createTask" id="fileCreateForm"
+                    enctype="multipart/form-data">
+                    <div class="row" style="padding-top: 2%;">
+                        <div class="col-2">
+                            <span clase="close1" id="fileClose"
+                                style="padding-left: 20%; font-size: x-large;">&times;</span>
+                        </div>
+                        <div class="col-6 offset-1">
+                            <h3 id="taskNameFile" class="text-center"></h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group centerAlign formTitle">
+                            <p style="margin-bottom: 0;">Add A File</p>
+                        </div>
+                    </div>
+
+                    <div class="col-10 m-auto">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <input type="hidden" id="urlIdFile" name="urlId" readonly>
+
+                                    <input type="hidden" id="taskIdFile" name="taskId" readonly>
+                                    Select a file (size cannot exceed 1MB):  <input type="file" name="image" accept="image/png, image/jpeg" id="imageInput"/>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-10 m-auto">
+                        <div class="form-group">
+                            <input type='submit' value='Submit' class="btn btn-primary btn-outline-light">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div th:fragment="copyright" class='copyright'>
+        <p>Terms Of Use</p>
+        <p>&copy; 2022 Slick IT Partners, LLC. All rights reserved.</p>
+
+    </div>
+</body>
+
+</html>

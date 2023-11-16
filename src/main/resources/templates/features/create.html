@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<!--
+created by: Jonathan Hays
+ -->
+<html xmlns:th="http://www.thymeleaf.org/">
+
+<head th:replace="fragments :: head"></head>
+
+<body>
+
+    <div class="sticky-top">
+        <div th:replace="fragments :: pageTitle"></div>
+        <div th:replace="fragments :: navBar"></div>
+
+
+    <div class="container">
+
+        <div class="row" style="margin-top:3%;">
+            <div class="col-4 m-auto">
+                <form method="post" class="form boxShadow backgroundColor"
+                      style="border-radius: 10px;padding-bottom: 3%;" action="/feature/create">
+                    <div class="form-group centerAlign formTitle" style="margin-top:2%">
+                        <a th:href="'/projects/details/'+${epic.project.id}" class="link">
+                            <h3 th:text="${epic.project.name}"></h3>
+                        </a>
+                        <a th:href="'/epics/details/'+${epic.id}" class="link">
+                            <h4 th:text="${epic.name}"></h4>
+                        </a>
+                        <p>Create Feature</p>
+                    </div>
+                    <div class="col-10 m-auto">
+                        <div class="form-group">
+                            <input type="hidden" th:value="${epic.id}" name="epicId" readonly>
+                            <label style="width: 100%;">
+                                Name:
+                                <input th:field="${feature.name}" class="form-control">
+                            </label>
+                            <p class="error" th:errors="${feature.name}"></p>
+                        </div>
+                    </div>
+                    <div class="col-10 m-auto">
+                        <div class="form-group">
+                            <label style="width: 100%;">
+                                Priority:
+                                <select th:field="${feature.priority}" class="custom-select">
+                                    <option th:each="type : ${priority}"
+                                            th:value="${type}"
+                                            th:text="${type.displayName}"
+                                    ></option>
+                                </select>
+                            </label>
+
+                        </div>
+                    </div>
+                    <div class="col-10 m-auto">
+                        <div class="form-group">
+                            <label style="width: 100%;">
+                                Size:
+                                <select th:field="${feature.size}" class="custom-select">
+                                    <option th:each="type : ${size}"
+                                            th:value="${type}"
+                                            th:text="${type.displayName}"
+                                    ></option>
+                                </select>
+                            </label>
+
+                        </div>
+                    </div>
+                    <div class="col-10 m-auto">
+                        <div class="form-group">
+                            <label>
+                                User Story:
+                                <textarea name="description" cols="26" rows="3"></textarea>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-10 m-auto">
+                        <div class="form-group">
+                            <input type='submit' value='Create' class="btn btn-primary btn-outline-light">
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<div th:replace="fragments :: copyright"></div>
+</body>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<!--
+created by: Jonathan Hays
+ -->
+<html xmlns:th="http://www.thymeleaf.org/">
+
+<head th:replace="fragments :: head"></head>
+
+<body>
+
+    <div class="sticky-top">
+        <div th:replace="fragments :: pageTitle"></div>
+        <div th:replace="fragments :: navBar"></div>
+    </div>
+
+
+<div class="container">
+    <div class="col-12" style="margin-top:1%">
+        <h3 style="text-align:center;color:black;">Active Projects</h3>
+    </div>
+    <div class="col-12 boxShadow backgroundColor" style="border-radius:10px;">
+    <div class="row" style="margin-top:3%">
+        <table class="table table-striped displayTable">
+            <tr class="tableHeader">
+<!--                <th style="text-align:center;">ID</th>-->
+                <th>Name</th>
+                <th style="text-align:center;">Priority</th>
+                <th style="text-align:center;">Status</th>
+                <th style="text-align:center;">Kanban</th>
+                <th style="text-align:center;">Details</th>
+            </tr>
+            <tr th:each="item : ${projects}">
+<!--                <td style="text-align:center;" th:text="${item.id}"></td>-->
+                <td th:text="${item.name}"></td>
+                <td>
+                    <div th:class="'box-'+${item.priority}" style="border-radius:5px;">
+                        <p style="text-align:center;padding: 3px;" th:text="${item.priority.displayName}"></p>
+                    </div>
+                </td>
+                <td style="text-align:center;" th:text="${item.status.displayName}"  th:class="${item.status}"></td>
+                <td style="text-align:center;">
+                    <a th:href="@{/kanban/{id}(id=${item.id})}">
+                        <button class="btn btn-primary btn-outline-light" style="text-align: center;">Kanban</button>
+                    </a>
+                </td>
+                <td style="text-align:center;">
+                    <a th:href="@{/projects/details/{id}(id=${item.id})}">
+                        <button class="btn btn-primary btn-outline-light" style="text-align: center;">Details</button>
+                    </a>
+                </td>
+            </tr>
+        </table>
+    </div>
+    </div>
+
+</div>
+<div th:replace="fragments :: copyright"></div>
+</body>
+
+</html>

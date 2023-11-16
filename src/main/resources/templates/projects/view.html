@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<!--
+created by: Jonathan Hays
+ -->
+<html xmlns:th="http://www.thymeleaf.org/">
+
+<head th:replace="fragments :: head"></head>
+
+<body>
+
+    <div class="sticky-top">
+        <div th:replace="fragments :: pageTitle"></div>
+        <div th:replace="fragments :: navBar"></div>
+    </div>
+
+
+
+    <div class="container">
+
+        <div class="row" >
+            <div class="col-12 boxShadow backgroundColor" id="searchDiv"
+                 style="margin-left:auto;margin-right:auto;margin-top:3%;border-radius:15px;">
+                <div class="row searchBox" style="margin-top:1%">
+                    <div class="col-sm-12 col-lg-6">
+                        <form th:action="@{/projects/results}" method="post" id="searchProjects">
+
+                            <div class="row">
+                                <div class="col-sm-12 col-lg-8">
+                                    <label for="searchTerm" id="searchDateLabel" class="formTitle"
+                                           style="min-width: 40%;">Search
+                                        Projects:</label>
+                                    <div class="row">
+                                        <div class="col-sm-12 col-lg-8">
+                                            <input type="text" name="searchTerm" id="searchTerm"
+                                                   style="height:35px;width:100%" />
+                                        </div>
+                                        <div class="col-sm-12 col-lg-4">
+                                            <input type="submit" value="Search" id="searchBtn" class="btn btn-primary btn-outline-light"
+                                                   style="height:35px;" />
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </form>
+                    </div>
+                    <div class="col-6">
+                        <a href="/projects/create" style="float:right;margin-top:40px;">
+                            <button class="btn btn-primary btn-outline-light">Create New Project</button>
+                        </a>
+                    </div>
+                </div>
+                <div class="row" style="margin-top:3%">
+                    <table class="table table-striped displayTable">
+                        <tr class="tableHeader">
+<!--                            <th style="text-align:center;">ID</th>-->
+                            <th>Name</th>
+                            <th style="text-align:center;">Priority</th>
+                            <th style="text-align:center;">Status</th>
+                            <th style="text-align:center;"># Of Open Epics</th>
+                            <th style="text-align:center;">Kanban</th>
+                            <th style="text-align:center;">Details</th>
+                        </tr>
+                        <tr th:each="item : ${allProjects}">
+<!--                            <td style="text-align:center;" th:text="${item.id}"></td>-->
+                            <td th:text="${item.name}"></td>
+                            <td>
+                            <div th:class="'box-'+${item.priority}" style="border-radius:5px;">
+                                <p style="text-align:center;padding: 3px;" th:text="${item.priority.displayName}"></p>
+                            </div>
+                            </td>
+                            <td style="text-align:center;" th:text="${item.status.displayName}"  th:class="${item.status}"></td>
+                            <td style="text-align:center;" th:text="${item.openEpics()}"></td>
+                            <td style="text-align:center;">
+                                <a th:href="@{/kanban/{id}(id=${item.id})}">
+                                    <button class="btn btn-primary btn-outline-light" style="text-align: center;">Kanban</button>
+                                </a>
+                            </td>
+                            <td style="text-align:center;">
+                                <a th:href="@{/projects/details/{id}(id=${item.id})}">
+                                    <button class="btn btn-primary btn-outline-light" style="text-align: center;">Details</button>
+                                </a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<div th:replace="fragments :: copyright"></div>
+</body>
+
+</html>

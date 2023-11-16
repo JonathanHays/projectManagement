@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<!--
+created by: Jonathan Hays
+ -->
+<html xmlns:th="http://www.thymeleaf.org/">
+
+<head th:replace="fragments :: head"></head>
+
+<body>
+
+<div class="sticky-top">
+    <div th:replace="fragments :: pageTitle"></div>
+    <div th:replace="fragments :: navBar"></div>
+</div>
+
+
+<div class="container-fluid">
+    <div class="row " style="margin-top: 3%;">
+        <div class="col-9 m-auto backgroundColor boxShadow" style="border-radius:15px">
+            <div class="row">
+                <h3 style="text-align:center;margin-top:15px;margin-bottom:20px" class="ml-auto mr-auto">Select Project</h3>
+            </div>
+            <div class="row" style="margin-bottom:15px;">
+                <div class="col-5 m-auto">
+                    <form action="/kanban/status" method="post">
+                        <label style="font-size: 20px;">Select Status
+                            <select name="status">
+                                <option value="all">All</option>
+                                <option th:each="item : ${statuses}" th:value=${item}
+                                        th:text=${item.displayName}></option>
+                            </select>
+                        </label>
+                        <input type="submit" value="Filter" class="btn btn-primary btn-outline-light"
+                               style="height:35px;margin-left: 1%;margin-top: -5px;"/>
+                    </form>
+                </div>
+                <div class="col-7">
+                    <form action="/kanban/project" method="post">
+                        <label style="font-size: 20px;">Projects
+                            <select name="project" style="max-width:400px;">
+                                <option th:each="item : ${projects}" th:value=${item.id} th:text=${item.name}></option>
+                            </select>
+                        </label>
+                        <input type="submit" value="Select" id="searchBtn" class="btn btn-primary btn-outline-light"
+                               style="height:35px;margin-left: 1%;margin-top: -5px;"/>
+                    </form>
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+
+
+</div>
+<div th:replace="fragments :: copyright"></div>
+<script th:src="@{/js/comment.js}"></script>
+</body>
+
+</html>

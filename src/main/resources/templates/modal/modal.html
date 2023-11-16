@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<!--
+created by: Jonathan Hays
+ -->
+<html xmlns:th="http://www.thymeleaf.org/">
+
+<head th:replace="fragments :: head"></head>
+
+<body>
+    <div class="sticky-top">
+        <div th:replace="fragments :: pageTitle"></div>
+        <div th:replace="fragments :: navBar"></div>
+        <link rel="stylesheet" th:href="@{/css/modal.css}">
+    </div>
+    <div class="container">
+        <div class="col-12 boxShadow backgroundColor" style="border-radius:10px;">
+            <div class="row" style="margin-top:3%">
+                <table class="table table-striped displayTable">
+                    <tr class="tableHeader">
+                        <th>Name</th>
+                        <th>bootStrap</th>
+                        <th>W3 Schools</th>
+                    </tr>
+                    <tr th:each="item : ${projects}">
+                        <td th:text="${item.name}"></td>
+                        <!-- bootStrap Button -->
+                        <td>
+                        
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" th:onclick="bsModal([[${item.name}]])">
+                                Open bootStrap Modal
+                              </button>
+                              
+                        </td>
+                        <!-- w3Schools button -->
+                        <td>
+                            <button id="w3-btn" class="btn btn-primary" th:onclick="w3Modal([[${item.name}]])">Open W3
+                                Modal</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- bootStrap Modal     -->
+
+     <!-- Button to trigger modal -->
+    
+      <!-- Modal -->
+      <div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <p id="projectName1" style="color:black;"></p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+ 
+  
+    <!-- w3Schools Modal -->
+    <!-- Modal content -->
+    <div id="w3Modal" class="modal1">
+        <div class="modal-content1">
+            <span class="close1">&times;</span>
+            <p id="projectName" style="color:black;"></p>
+        </div>
+    </div>
+
+
+
+
+    <script th:src="@{/js/modal.js}"></script>
+    <div th:replace="fragments :: copyright"></div>
+</body>
+
+</html>

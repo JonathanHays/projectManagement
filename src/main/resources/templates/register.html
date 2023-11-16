@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<!-- 
+created by: Jonathan Hays
+ -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+
+<head th:replace="fragments :: head"></head>
+
+<body>
+    <div th:replace="fragments :: pageTitle"></div>
+    <div class='container'>
+
+        <div class="row">
+            <div class="col-16 m-auto">
+
+                <form method="post" class="form boxShadow backgroundColor"
+                    style="margin-top: 10%;width:100%;min-width: 300px;border-radius: 10px;padding-bottom: 3%;" action="/register" id="regForm">
+                    <div class="form-group centerAlign formTitle">
+                        <p>Create  Login</p>
+                    </div>
+                    <div class="form-group centerAlign">
+                        <div class="row">
+                            <div class="col-sm-12 col-lg-6">
+                                <label class="regLabel">
+                                    First Name:
+                                    <input th:field="${registerFormDTO.firstName}" class="form-control">
+                                </label>
+                                <p class="error" th:errors="${registerFormDTO.firstName}"></p>
+                            </div>
+                            <div class="col-sm-12 col-lg-6">
+                                <label class="regLabel">
+                                    Last Name:
+                                    <input th:field="${registerFormDTO.lastName}" class="form-control">
+                                </label>
+                                <p class="error" th:errors="${registerFormDTO.lastName}">
+                                </p>
+
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-sm-12 col-lg-6">
+                                <label class="regLabel">
+                                    Username:
+                                    <input th:field="${registerFormDTO.username}" class="form-control">
+                                </label>
+                                <p class="error" th:errors="${registerFormDTO.username}"></p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 col-lg-6">
+                                <label class="regLabel">
+                                    Password:
+                                    <input th:field="${registerFormDTO.password}" class="form-control" type="password">
+                                </label>
+                                <p class="error" th:errors="${registerFormDTO.password}"></p>
+                            </div>
+                            <div class="col-sm-12 col-lg-6">
+                                <label class="regLabel">Verify Password
+                                    <input class="form-control" th:field="${registerFormDTO.verifyPassword}"
+                                        type="password" />
+                                </label>
+                            </div>
+                        </div>
+                        <input type='submit' value='Create' class="btn btn-primary btn-outline-light">
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+    </div>
+    <div th:replace="fragments :: copyright"></div>
+
+</body>
+
+</html>

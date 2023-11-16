@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<!--
+created by: Jonathan Hays
+ -->
+<html xmlns:th="http://www.thymeleaf.org/">
+
+<head th:replace="fragments :: head"></head>
+
+<body>
+
+    <div class="sticky-top">
+        <div th:replace="fragments :: pageTitle"></div>
+        <div th:replace="fragments :: navBar"></div>
+    </div>
+
+
+    <div class="container-fluid">
+        <div class="col-12" style="margin-top:1%">
+            <div class="row">
+
+                <a th:href="'/projects/details/'+${project.id}" class="link text-center"
+                   style="color:#333333;">
+                    <h5 th:text="${project.name}"></h5>
+                </a>
+
+                <a th:href="'/kanban/'+${project.id}" class="link text-center" style="color:#333333;float:right;margin-left: auto;margin-right: 1%;">
+                    <h5>Kanban Board</h5>
+                </a>
+            </div>
+        </div>
+        <div class="row" style="margin-top:1%;">
+            <div class="col-sm-12 col-lg-4">
+                <form method="post" class="form boxShadow backgroundColor"
+                    style="border-radius: 10px;padding-bottom: 3%;" action="/projects/update">
+                    <div class="form-group centerAlign formTitle">
+                        <p>Project Details</p>
+                    </div>
+                    <div class="col-10 m-auto">
+                        <input type="hidden" th:field="${project.id}" readonly>
+                        <input type="hidden" th:field="${project.createdAt}" readonly>
+                        <input type="hidden" th:field="${project.createdBy}" readonly>
+
+                        <div class="form-group">
+                            <label style="width: 100%;">
+                                Name:
+                                <input th:field="${project.name}" class="form-control">
+                            </label>
+                            <p class="error" th:errors="${project.name}"></p>
+                        </div>
+                    </div>
+                    <div class="col-10 m-auto">
+                        <div class="form-group">
+                            <label style="width: 100%;">
+                                Status:
+                                <select th:field="${project.status}" class="custom-select">
+                                    <option th:each="type : ${statuses}" th:value="${type}"
+                                        th:text="${type.displayName}"></option>
+                                </select>
+                            </label>
+
+                        </div>
+                    </div>
+                    <div class="col-10 m-auto">
+                        <div class="form-group">
+                            <label style="width: 100%;">
+                                Priority:
+                                <select th:field="${project.priority}" class="custom-select">
+                                    <option th:each="type : ${priority}" th:value="${type}"
+                                        th:text="${type.displayName}"></option>
+                                </select>
+                            </label>
+
+                        </div>
+                    </div>
+
+                    <div class="col-10 m-auto">
+                        <div class="form-group">
+                            <label>
+                                User Story:
+                                <textarea name="description" cols="33" rows="3"
+                                    th:text="${project.description}"></textarea>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-10 m-auto">
+                        <div class="form-group">
+                            <input type='submit' value='Update' class="btn btn-primary btn-outline-light">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-sm-12 col-lg-8">
+                <div class="col-12 boxShadow backgroundColor" id="searchDiv"
+                    style="margin-left:auto;margin-right:auto;border-radius:15px;">
+                    <div class="row searchBox">
+                        <div class="col-sm-12 col-lg-8">
+                            <form th:action="@{/projects/details/results}" method="post" id="searchprojects">
+                                <input type="hidden" name="projectId" th:value="${project.id}" readonly>
+                                <div class="row">
+                                    <div class="col-sm-12 col-lg-12">
+                                        <label for="searchTerm" id="searchDateLabel" class="formTitle"
+                                            style="min-width: 40%;">Search
+                                            Epics:</label>
+                                        <div class="row">
+                                            <div class="col-sm-12 col-lg-6">
+                                                <input type="text" name="searchTerm" id="searchTerm"
+                                                    style="height:35px;width:100%" />
+                                            </div>
+                                            <div class="col-sm-12 col-lg-3">
+                                                <label style="width: 100%;margin-top:-26px">
+                                                    Status:
+                                                    <select class="custom-select" name="status">
+                                                        <option value="all">All</option>
+                                                        <option th:each="type : ${statuses}" th:value="${type}"
+                                                            th:text="${type.displayName}"></option>
+                                                    </select>
+                                                </label>
+                                            </div>
+                                            <div class="col-sm-12 col-lg-3">
+                                                <input type="submit" value="Search"
+                                                    class="btn btn-primary btn-outline-light" style="height:35px;" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-4">
+                            <a th:href="@{/epics/create/{id}(id=${project.id})}" style="float:right;margin-top:40px;">
+                                <button class="btn btn-primary btn-outline-light">Create New Epic</button>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top:3%;max-height: 400px;
+overflow: auto;">
+                        <table class="table table-striped displayTable">
+                            <tr class="tableHeader">
+                                <th>Name</th>
+                                <th style="text-align:center;">Priority</th>
+                                <th style="text-align:center;">Size</th>
+                                <th style="text-align:center;">Status</th>
+                                <th style="text-align:center;"># of Open Features</th>
+                                <th style="text-align:center;">Details</th>
+                            </tr>
+                            <tr th:each="item : ${epics}">
+                                <td th:text="${item.name}"></td>
+                                <td>
+                                    <div th:class="'box-'+${item.priority}" style="border-radius:5px;">
+                                        <p style="text-align:center;padding: 3px;" th:text="${item.priority.displayName}"></p>
+                                    </div>
+                                </td>
+                                <td style="text-align:center;" th:text="${item.size.displayName}"></td>
+                                <td style="text-align:center;" th:text="${item.status.displayName}"
+                                    th:class="${item.status}"></td>
+                                <td style="text-align:center;" th:text="${item.featureCount()}"></td>
+
+                                <td style="text-align:center;">
+                                    <a th:href="@{/epics/details/{id}(id=${item.id})}">
+                                        <button class="btn btn-primary btn-outline-light" style="text-align: center;">
+                                            Details
+                                        </button>
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+        <div class="row" style="margin-top:2%;margin-left: 0;margin-right: 0;">
+            <div class="col-12 boxShadow backgroundColor" style="border-radius: 10px;">
+                <div class="row" style="padding-top: 1%;">
+                    <div class="col-8 m-auto">
+                        <form th:action="@{/notes/project/create}" method="post">
+                            <div class="row">
+                                <div>
+                                    <input type="hidden" name="project" th:value="${project.id}" readonly>
+                                </div>
+                                <p>
+                                    <label for="notes" id="notesLabel" class="formTitle">Enter Note:</label>
+                                    <textarea name="notes" id="notes" rows="1" cols="50"></textarea>
+                                </p>
+                                <input type="submit" value="Submit" class="btn btn-primary"
+                                    style="height:38px;margin-left:2%" />
+
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+                <div class="row">
+
+                    <table class="table table-striped displayTable">
+                        <tr class="tableHeader">
+                            <th style="width: 125px;">Date</th>
+                            <th style="width: 175px;">Created By</th>
+                            <th>Note</th>
+                        </tr>
+                        <tr th:each="item : ${project.getNotesList()}">
+                            <td th:text="${item.getDate()}"></td>
+                            <td th:text="${item.createdBy.firstName}+' '+${item.createdBy.lastName}"></td>
+                            <td th:text="${item.comment}"></td>
+
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div th:replace="fragments :: copyright"></div>
+</body>
+
+</html>
