@@ -4,13 +4,13 @@ created by: Jonathan Hays
  -->
 <html xmlns:th="http://www.thymeleaf.org/">
 
-<head th:replace="fragments :: head"></head>
+<head th:replace="~{fragments ::  head}"></head>
 
 <body>
 
 <div class="sticky-top">
-    <div th:replace="fragments :: pageTitle"></div>
-    <div th:replace="fragments :: navBar"></div>
+    <div th:replace="~{fragments :: pageTitle}"></div>
+    <div th:replace="~{fragments :: navBar}"></div>
 
 
     <div class="container">
@@ -27,7 +27,7 @@ created by: Jonathan Hays
         </div>
 
         <div class="row boxShadow backgroundColor" style="margin-top:1%;border-radius:15px;" >
-            <table class="table table-striped displayTable">
+            <table class="table  displayTable">
                 <tr class="tableHeader">
                     <th>Epic</th>
                     <th>Feature</th>
@@ -63,7 +63,7 @@ created by: Jonathan Hays
                         th:class="${item.status}"></td>
                     <td style="text-align:center;">
                         <a th:href="@{/tasks/details/{id}(id=${item.id})}">
-                            <button class="btn btn-primary btn-outline-light" style="text-align: center;height: 30px;padding-top: 2px;">
+                            <button class="btn btn-primary btn-outline-light" style="text-align: center;height: 26px;padding-top: 2px;">
                                 Details
                             </button>
                         </a>
@@ -75,5 +75,5 @@ created by: Jonathan Hays
     </div>
 
 </div>
-<div th:replace="fragments :: copyright"></div>
+<div th:replace="~{fragments :: copyright}"></div>
 </body>

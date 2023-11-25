@@ -4,21 +4,21 @@ created by: Jonathan Hays
  -->
 <html xmlns:th="http://www.thymeleaf.org/">
 
-<head th:replace="fragments :: head"></head>
+<head th:replace="~{fragments ::  head}"></head>
 
 <body>
 
     <div class="sticky-top">
-        <div th:replace="fragments :: pageTitle"></div>
-        <div th:replace="fragments :: navBar"></div>
+        <div th:replace="~{fragments :: pageTitle}"></div>
+        <div th:replace="~{fragments :: navBar}"></div>
 
 
     <div class="container">
 
         <div class="row" style="margin-top:3%;">
-            <div class="col-4 m-auto">
-                <form method="post" class="form boxShadow backgroundColor"
-                      style="border-radius: 10px;padding-bottom: 3%;" action="/tasks/create">
+            <div class="col-lg-4 col-lg-offset-4 m-auto boxShadow backgroundColor" style="border-radius: 10px;">
+                <form method="post" class="form"
+                      style="padding-bottom: 3%;" action="/tasks/create">
                     <div class="form-group centerAlign formTitle" style="margin-top:2%">
                         <a th:href="'/projects/details/'+${feature.epic.project.id}" class="link">
                             <h3 th:text="${feature.epic.project.name}"></h3>
@@ -26,12 +26,12 @@ created by: Jonathan Hays
                         <a th:href="'/epics/details/'+${feature.epic.id}" class="link">
                             <h4 th:text="${feature.epic.name}"></h4>
                         </a>
-                        <a th:href="'/features/details/'+${feature.id}" class="link">
+                        <a th:href="'/feature/details/'+${feature.id}" class="link">
                             <h5 th:text="${feature.name}"></h5>
                         </a>
                         <p>Create Task</p>
                     </div>
-                    <div class="col-10 m-auto">
+                    <div class="col-lg-12 m-auto">
                         <div class="form-group">
                             <input type="hidden" th:value="${feature.id}" name="featureId" readonly>
                             <label style="width: 100%;">
@@ -41,11 +41,11 @@ created by: Jonathan Hays
                             <p class="error" th:errors="${task.name}"></p>
                         </div>
                     </div>
-                    <div class="col-10 m-auto">
+                    <div class="col-lg-12 m-auto">
                         <div class="form-group">
                             <label style="width: 100%;">
                                 Priority:
-                                <select th:field="${task.priority}" class="custom-select">
+                                <select th:field="${task.priority}" class="form-control">
                                     <option th:each="type : ${priority}"
                                             th:value="${type}"
                                             th:text="${type.displayName}"
@@ -55,11 +55,11 @@ created by: Jonathan Hays
 
                         </div>
                     </div>
-                    <div class="col-10 m-auto">
+                    <div class="col-lg-12 m-auto">
                         <div class="form-group">
                             <label style="width: 100%;">
                                 Size:
-                                <select th:field="${task.size}" class="custom-select">
+                                <select th:field="${task.size}" class="form-control">
                                     <option th:each="type : ${size}"
                                             th:value="${type}"
                                             th:text="${type.displayName}"
@@ -69,15 +69,15 @@ created by: Jonathan Hays
 
                         </div>
                     </div>
-                    <div class="col-10 m-auto">
+                    <div class="col-lg-12 m-auto">
                         <div class="form-group">
                             <label>
                                 Description:
-                                <textarea name="description" cols="26" rows="3"></textarea>
+                                <textarea name="description" cols="26" rows="3" class="form-control"></textarea>
                             </label>
                         </div>
                     </div>
-                    <div class="col-10 m-auto">
+                    <div class="col-lg-10 m-auto">
                         <div class="form-group">
                             <input type='submit' value='Create' class="btn btn-primary btn-outline-light">
                         </div>
@@ -90,7 +90,7 @@ created by: Jonathan Hays
     </div>
 
 </div>
-<div th:replace="fragments :: taskCreateModal"></div>
-<script th:src="@{/js/taskFile.js}"></script>
-<div th:replace="fragments :: copyright"></div>
+<div th:replace="~{fragments :: taskCreateModal}"></div>
+<div th:replace="~{fragments :: copyright}"></div>
 </body>
+</html>

@@ -4,19 +4,20 @@ created by: Jonathan Hays
  -->
 <html xmlns:th="http://www.thymeleaf.org/">
 
-<head th:replace="fragments :: head"></head>
+<head th:replace="~{fragments ::  head}">
+</head>
 
 <body>
 
     <div class="sticky-top">
-        <div th:replace="fragments :: pageTitle"></div>
-        <div th:replace="fragments :: navBar"></div>
+        <div th:replace="~{fragments :: pageTitle}"></div>
+        <div th:replace="~{fragments :: navBar}"></div>
     </div>
-  
+
 
     <div class="container-fluid">
-        <div class="col-12" style="margin-top:1%">
-            <div class="row" >
+        <div class="col-lg-12" style="margin-top:1%">
+            <div class="row" style="display:flex;">
 
                 <a th:href="'/projects/details/'+${epic.project.id}" class="link">
                     <h5 th:text="${epic.project.name}" style="text-align:center;color:black;"></h5>
@@ -29,82 +30,85 @@ created by: Jonathan Hays
 
         <div class="row" style="margin-top:1%;">
             <div class="col-sm-12 col-lg-4">
-                <form method="post" class="form boxShadow backgroundColor"
-                    style="border-radius: 10px;padding-bottom: 3%;" action="/epics/update">
-                    <div class="form-group centerAlign formTitle">
-                        <p>Epic Details</p>
-                    </div>
-                    <div class="col-10 m-auto">
-                        <input type="hidden" th:field="${epic.id}" readonly>
-                        <input type="hidden" th:field="${epic.createdAt}" readonly>
-                        <input type="hidden" th:field="${epic.createdBy}" readonly>
-                        <input type="hidden" th:field="${epic.project}" readonly>
+                <div class="col-sm-12 boxShadow backgroundColor" style="border-radius: 10px;">
+                    <form method="post" class="form "
+                          style="padding-bottom: 3%;" action="/epics/update">
+                        <div class="form-group centerAlign formTitle">
+                            <p>Epic Details</p>
+                        </div>
+                        <div class="col-lg-12 m-auto">
+                            <input type="hidden" th:field="${epic.id}" readonly>
+                            <input type="hidden" th:field="${epic.createdAt}" readonly>
+                            <input type="hidden" th:field="${epic.createdBy}" readonly>
+                            <input type="hidden" th:field="${epic.project}" readonly>
 
-                        <div class="form-group">
-                            <label style="width: 100%;">
-                                Name:
-                                <input th:field="${epic.name}" class="form-control">
-                            </label>
-                            <p class="error" th:errors="${epic.name}"></p>
+                            <div class="form-group">
+                                <label style="width: 100%;">
+                                    Name:
+                                    <input th:field="${epic.name}" class="form-control">
+                                </label>
+                                <p class="error" th:errors="${epic.name}"></p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-10 m-auto">
-                        <div class="form-group">
-                            <label style="width: 100%;">
-                                Status:
-                                <select th:field="${epic.status}" class="custom-select">
-                                    <option th:each="type : ${statuses}" th:value="${type}"
-                                        th:text="${type.displayName}">
-                                    </option>
-                                </select>
-                            </label>
+                        <div class="col-lg-12 m-auto">
+                            <div class="form-group">
+                                <label style="width: 100%;">
+                                    Status:
+                                    <select th:field="${epic.status}" class="form-control">
+                                        <option th:each="type : ${statuses}" th:value="${type}"
+                                                th:text="${type.displayName}">
+                                        </option>
+                                    </select>
+                                </label>
 
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-10 m-auto">
-                        <div class="form-group">
-                            <label style="width: 100%;">
-                                Priority:
-                                <select th:field="${epic.priority}" class="custom-select">
-                                    <option th:each="type : ${priority}" th:value="${type}"
-                                        th:text="${type.displayName}">
-                                    </option>
-                                </select>
-                            </label>
+                        <div class="col-lg-12 m-auto">
+                            <div class="form-group">
+                                <label style="width: 100%;">
+                                    Priority:
+                                    <select th:field="${epic.priority}" class="form-control">
+                                        <option th:each="type : ${priority}" th:value="${type}"
+                                                th:text="${type.displayName}">
+                                        </option>
+                                    </select>
+                                </label>
 
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-10 m-auto">
-                        <div class="form-group">
-                            <label style="width: 100%;">
-                                Size:
-                                <select th:field="${epic.size}" class="custom-select">
-                                    <option th:each="type : ${size}" th:value="${type}" th:text="${type.displayName}">
-                                    </option>
-                                </select>
-                            </label>
+                        <div class="col-lg-12 m-auto">
+                            <div class="form-group">
+                                <label style="width: 100%;">
+                                    Size:
+                                    <select th:field="${epic.size}" class="form-control">
+                                        <option th:each="type : ${size}" th:value="${type}" th:text="${type.displayName}">
+                                        </option>
+                                    </select>
+                                </label>
 
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-10 m-auto">
-                        <div class="form-group">
-                            <label>
-                                User Story:
-                                <textarea name="description" cols="33" rows="3"
-                                    th:text="${epic.description}"></textarea>
-                            </label>
+                        <div class="col-lg-12 m-auto">
+                            <div class="form-group">
+                                <label>
+                                    User Story:
+                                    <textarea name="description" cols="75" rows="3"
+                                              th:text="${epic.description}" class="form-control"></textarea>
+                                </label>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-10 m-auto">
-                        <div class="form-group">
-                            <input type='submit' value='Update' class="btn btn-primary btn-outline-light">
+                        <div class="col-lg-12 m-auto">
+                            <div class="form-group">
+                                <input type='submit' value='Update' class="btn btn-primary btn-outline-light">
+                            </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
+
             <div class="col-sm-12 col-lg-8">
-                <div class="col-12 boxShadow backgroundColor" id="searchDiv"
-                    style="margin-left:auto;margin-right:auto;border-radius:15px;">
+                <div class="col-lg-12 boxShadow backgroundColor" id="searchDiv"
+                     style="margin-left:auto;margin-right:auto;border-radius:15px;">
                     <div class="row searchBox">
                         <div class="col-sm-12 col-lg-8">
                             <form th:action="@{/epics/details/results}" method="post" id="searchEpics">
@@ -112,33 +116,35 @@ created by: Jonathan Hays
                                 <div class="row">
                                     <div class="col-sm-12 col-lg-12">
                                         <label for="searchTerm" id="searchDateLabel" class="formTitle"
-                                            style="min-width: 40%;">Search
-                                            Features:</label>
+                                               style="min-width: 40%; text-align: left;">
+                                            Search
+                                            Features:
+                                        </label>
                                         <div class="row">
                                             <div class="col-sm-12 col-lg-6">
                                                 <input type="text" name="searchTerm" id="searchTerm"
-                                                    style="height:35px;width:100%" />
+                                                       style="height:35px;width:100%" class="form-control" />
                                             </div>
                                             <div class="col-sm-12 col-lg-3">
-                                                <label style="width: 100%;margin-top:-26px">
+                                                <label style="width: 100%;margin-top:-20px">
                                                     Status:
-                                                    <select class="custom-select" name="status">
+                                                    <select class="form-control" name="status">
                                                         <option value="all">All</option>
                                                         <option th:each="type : ${statuses}" th:value="${type}"
-                                                            th:text="${type.displayName}"></option>
+                                                                th:text="${type.displayName}"></option>
                                                     </select>
                                                 </label>
                                             </div>
                                             <div class="col-sm-12 col-lg-3">
                                                 <input type="submit" value="Search"
-                                                    class="btn btn-primary btn-outline-light" style="height:35px;" />
+                                                       class="btn btn-primary btn-outline-light" style="height:34px;" />
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </form>
                         </div>
-                        <div class="col-4">
+                        <div class="col-lg-4">
                             <a th:href="@{/feature/create/{id}(id=${epic.id})}" style="float:right;margin-top:40px;">
                                 <button class="btn btn-primary btn-outline-light">Create New Feature</button>
                             </a>
@@ -146,7 +152,7 @@ created by: Jonathan Hays
                     </div>
                     <div class="row" style="margin-top:3%;max-height: 487px;
 overflow: auto;">
-                        <table class="table table-striped displayTable">
+                        <table class="table  displayTable">
                             <tr class="tableHeader">
                                 <th>Name</th>
                                 <th style="text-align:center;">Priority</th>
@@ -182,20 +188,20 @@ overflow: auto;">
             </div>
         </div>
         <div class="row" style="margin-top:2%;margin-left: 0;margin-right: 0;">
-            <div class="col-12 boxShadow backgroundColor" style="border-radius: 10px;">
+            <div class="col-lg-12 boxShadow backgroundColor" style="border-radius: 10px;">
                 <div class="row" style="padding-top: 1%;margin-left:0;margin-right:0;">
-                    <div class="col-8 m-auto">
+                    <div class="col-lg-8 m-auto">
                         <form th:action="@{/notes/epic/create}" method="post">
-                            <div class="row">
+                            <div class="row" style="display:flex;margin-left:0px;">
                                 <div>
                                     <input type="hidden" name="epic" th:value="${epic.id}" readonly>
                                 </div>
                                 <p>
                                     <label for="notes" id="notesLabel" class="formTitle">Enter Note:</label>
-                                    <textarea name="notes" id="notes" rows="1" cols="50"></textarea>
+                                    <textarea name="notes" id="notes" rows="1" cols="50" class="form-control"></textarea>
                                 </p>
-                                <input type="submit" value="Submit" class="btn btn-primary"
-                                    style="height:38px;margin-left:2%" />
+                                <input type="submit" value="Submit" class="btn btn-primary btn-outline-light"
+                                       style="margin-top:38px;height:34px;margin-left:2%" />
 
                             </div>
 
@@ -204,7 +210,7 @@ overflow: auto;">
                 </div>
                 <div class="row">
 
-                    <table class="table table-striped displayTable">
+                    <table class="table  displayTable">
                         <tr class="tableHeader">
                             <th style="width: 125px;">Date</th>
                             <th style="width: 175px;">Created By</th>
@@ -223,7 +229,7 @@ overflow: auto;">
 
     </div>
 
-    <div th:replace="fragments :: copyright"></div>
+    <div th:replace="~{fragments :: copyright}"></div>
 </body>
 
 </html>

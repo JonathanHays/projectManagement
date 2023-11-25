@@ -4,57 +4,57 @@ created by: Jonathan Hays
  -->
 <html xmlns:th="http://www.thymeleaf.org/">
 
-<head th:replace="fragments :: head"></head>
+<head th:replace="~{fragments :: head}"></head>
 
-<body>
+<body style="min-width:0px;">
 
 <div class="sticky-top">
-    <div th:replace="fragments :: pageTitle"></div>
-    <div th:replace="fragments :: navBar"></div>
+    <div th:replace="~{fragments :: pageTitle}"></div>
+    <div th:replace="~{fragments :: navBar}"></div>
 </div>
 
 
 <div class="container-fluid">
 
-    <div class="col-12 ml-auto mr-auto" style="margin-top:2%;">
-        <div class="row" style="margin-left: 14px;margin-bottom: -40px;">
+    <div class="col-lg-12 ml-auto mr-auto" style="margin-top:10px;">
+        <div class="row" style="margin-left: 14px;display:flex;">
             <a th:href="'/kanban/'+${feature.epic.project.id}" class="link text-center"
                style="color:#333333;">
-                <h5 th:text="${feature.epic.project.name}+'-Kanban'"></h5>
+                <h5 th:text="${feature.epic.project.name}+' - Kanban'"></h5>
             </a>
-            <p style="color: #333333;">
+            <p style="color: #333333;align-self:end;">
                 &nbsp; - &nbsp;
             </p>
             <a th:href="'/kanban/epic/'+${feature.epic.id}" class="link text-center" style="color:#333333;">
-                <h5 th:text="${feature.epic.name}+'-Kanban'"></h5>
+                <h5 th:text="${feature.epic.name}+' - Kanban'"></h5>
 
             </a>
         </div>
 
-        <div style="margin-top:2%;border-radius:10px;padding:2%;" class="backgroundColor boxShadow">
+        <div style="border-radius: 10px; padding: 0% 2% 2% 2%;" class="backgroundColor boxShadow">
             <div class="row">
-                <div class="col-2 offset-10" style="float: right;">
+                <div class="col-lg-2 col-lg-offset-10" style="float: right;">
                     <a th:href="@{/projects/backlog/{id}(id=${feature.epic.project.id})}" style="float:right;">
-                        <button class="btn btn-link" style="color:white;margin-top: -35px;">View Backlog
+                        <button class="btn btn-link" style="color:white;">View Backlog
                             Task
                         </button>
                     </a>
                 </div>
 
             </div>
-            <div class="row" style="margin-top:-20px">
+            <div class="row" style="margin-top:-20px;display:flex;">
 
                 <a th:href="'/projects/details/'+${feature.epic.project.id}" class="link"  style="margin-left:auto;">
                     <h4 th:text="${feature.epic.project.name}"></h4>
                 </a>
-                <p>
+                <p style="align-self:end;">
                     &nbsp; - &nbsp;
                 </p>
 
                 <a th:href="'/epics/details/'+${feature.epic.id}" class="link" >
                     <h4 th:text="${feature.epic.name}"></h4>
                 </a>
-                <p>
+                <p style="align-self:end;">
                     &nbsp; - &nbsp;
                 </p>
 
@@ -63,30 +63,28 @@ created by: Jonathan Hays
                 </a>
 
             </div>
-            <div class="row" style="margin: 1%;">
-
-            </div>
             <div >
                 <div class="row" style="margin:0;height: 25px;">
-                    <div class="col-4">
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-9">
                         <a th:href="'/feature/details/'+${feature.id}" class="link">
                             <h5 th:text="${feature.name}+ '  ('+${feature.status.displayName}+')'"></h5>
                         </a>
                     </div>
-                    <div class="col-3 offset-5" style="float: right;">
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-3">
                         <!-- <a th:href="@{/tasks/create/{id}(id=${feature.id})}" style="float:right;">
-                            <button class="btn btn-link" style="color:white;margin-top: -5px;">Create New
-                                Task
-                            </button>
-                        </a> -->
-                        <button  th:onclick="taskCreateModal([[${feature.id}]],[[${feature.name}]])" class="btn btn-link" style="color:white;margin-top: -5px;float:right;">Create New
+        <button class="btn btn-link" style="color:white;margin-top: -5px;">Create New
+            Task
+        </button>
+    </a> -->
+                        <button th:onclick="taskCreateModal([[${feature.id}]],[[${feature.name}]])" class="btn btn-link" style="color:white;margin-top: -5px;float:right;">
+                            Create New
                             Task
                         </button>
                     </div>
                 </div>
                 <div class="row"
-                     style="background-color: lightgray;margin: .1%;border-radius: 5px;padding-top: .5%;padding-bottom: 2%;">
-                    <div class="col-3">
+                     style="background-color: lightgray; margin-left: 0px; margin-right: 0px; margin-top: 5px; border-radius: 5px; padding-top: .5%; padding-bottom: 2%; ">
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
                         <table style="width:100%;">
                             <tr style="border-bottom: 1px solid slategrey;">
                                 <th style="text-align: center;color: black;font-size: 20px;font-weight: bold;">
@@ -95,12 +93,12 @@ created by: Jonathan Hays
                             </tr>
                             <tr th:each="item : ${feature.getReadyTask()}">
                                 <td>
-                                    <div th:replace="fragments :: taskCard"></div>
+                                    <div th:replace="~{fragments :: taskCard}"></div>
                                 </td>
                             </tr>
                         </table>
                     </div>
-                    <div class="col-3">
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
                         <table style="width:100%;">
                             <tr style="border-bottom: 1px solid slategrey;">
                                 <th style="text-align: center;color: black;font-size: 20px;font-weight: bold;">
@@ -109,12 +107,12 @@ created by: Jonathan Hays
                             </tr>
                             <tr th:each="item : ${feature.getInProgressTask()}">
                                 <td>
-                                    <div th:replace="fragments :: taskCard"></div>
+                                    <div th:replace="~{fragments :: taskCard}"></div>
                                 </td>
                             </tr>
                         </table>
                     </div>
-                    <div class="col-3">
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
                         <table style="width:100%;">
                             <tr style="border-bottom: 1px solid slategrey;">
                                 <th style="text-align: center;color: black;font-size: 20px;font-weight: bold;">
@@ -123,12 +121,12 @@ created by: Jonathan Hays
                             </tr>
                             <tr th:each="item : ${feature.getTestTask()}">
                                 <td>
-                                    <div th:replace="fragments :: taskCard"></div>
+                                    <div th:replace="~{fragments :: taskCard}"></div>
                                 </td>
                             </tr>
                         </table>
                     </div>
-                    <div class="col-3">
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
                         <table style="width:100%;">
                             <tr style="border-bottom: 1px solid slategrey;">
                                 <th style="text-align: center;color: black;font-size: 20px;font-weight: bold;">
@@ -137,7 +135,7 @@ created by: Jonathan Hays
                             </tr>
                             <tr th:each="item : ${feature.getCompleteTask()}">
                                 <td>
-                                    <div th:replace="fragments :: taskCard"></div>
+                                    <div th:replace="~{fragments :: taskCard}"></div>
                                 </td>
                             </tr>
                         </table>
@@ -150,11 +148,11 @@ created by: Jonathan Hays
     </div>
 </div>
 
-<div th:replace="fragments :: taskNoteModal"></div>
-<div th:replace="fragments :: taskCreateModal"></div>
-<div th:replace="fragments :: fileCreateModal"></div>
-<div th:replace="fragments :: taskEditModal"></div>
-<div th:replace="fragments :: copyright"></div>
+<div th:replace="~{fragments :: taskNoteModal}"></div>
+<div th:replace="~{fragments :: taskCreateModal}"></div>
+<div th:replace="~{fragments :: fileCreateModal}"></div>
+<div th:replace="~{fragments :: taskEditModal}"></div>
+<div th:replace="~{fragments :: copyright}"></div>
 <script th:src="@{/js/comment.js}"></script>
 </body>
 

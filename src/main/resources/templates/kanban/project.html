@@ -4,165 +4,173 @@ created by: Jonathan Hays
  -->
 <html xmlns:th="http://www.thymeleaf.org/">
 
-<head th:replace="fragments :: head"></head>
+<head th:replace="~{fragments :: head}">
+</head>
 
-<body>
+<body style="min-width:0px;">
 
-<div class="sticky-top">
-    <div th:replace="fragments :: pageTitle"></div>
-    <div th:replace="fragments :: navBar"></div>
-</div>
+    <div class="sticky-top">
+        <div th:replace="~{fragments :: pageTitle}"></div>
+        <div th:replace="~{fragments :: navBar}"></div>
+    </div>
 
 
-<div class="container-fluid">
+    <div class="container-fluid">
 
-    <div class="col-12 ml-auto mr-auto" style="margin-top:2%;">
-        <div style="margin-top:2%;border-radius:10px;padding:2%;" class="backgroundColor boxShadow">
-            <div class="row">
-                <div class="col-6 offset-3">
-                    <a th:href="'/projects/details/'+${project.id}" class="link">
-                        <h4 th:text="${project.name}" style="text-align:center;margin-bottom: auto;"></h4>
-                    </a>
-                </div>
-                <div class="col-2 offset-1" style="float: right;">
-                    <a th:href="@{/projects/backlog/{id}(id=${project.id})}" style="float:right;">
-                        <button class="btn btn-link" style="color:white;margin-top: -35px;">View Backlog
-                            Task
-                        </button>
-                    </a>
-                </div>
-            </div>
-            <div class="row" style="margin: 1%;">
-                <div class="col-6">
-                    <form action="/kanban/statusEpic" method="post">
-                        <input type="hidden" name="projectId" th:value="${project.id}" readonly>
-                        <label style="font-size: 20px;">Select Epic Status
-                            <select name="status">
-                                <option value="all">All</option>
-                                <option th:each="item : ${statuses}" th:value=${item} th:text=${item.displayName}></option>
-                            </select>
-                        </label>
-                        <input type="submit" value="Search" class="btn btn-primary btn-outline-light"
-                               style="height:35px;margin-left: 1%;margin-top: -5px;"/>
-                    </form>
-                </div>
-                <div class="col-6">
-                    <form action="/kanban/epic" method="post">
-                        <label style="font-size: 20px;;">Select Epic
-                            <select name="epic">
-                                <option th:each="item : ${epics}" th:value=${item.id} th:text=${item.name}></option>
-                            </select>
-                        </label>
-                        <input type="submit" value="Select" id="searchBtn" class="btn btn-primary btn-outline-light"
-                               style="height:35px;margin-left: 1%;margin-top: -5px;"/>
-                    </form>
-                </div>
+        <div class="col-lg-12 ml-auto mr-auto" style="margin-top:10px;">
+            <div style="border-radius: 10px; padding: 0% 2% 2% 2%;" class="backgroundColor boxShadow">
+                <div class="row">
 
-            </div>
-            <div th:each="epic : ${epics}">
-                <div style="border-bottom: 2px solid;">
-                    <div class="row" style="margin:0;height: 25px;">
-                        <div class="col-4">
-                            <a th:href="'/epics/details/'+${epic.id}" class="link">
-                                <h5 th:text="${epic.name}+ '  ('+${epic.status.displayName}+')'"
-                                    style="font-weight:bolder;margin: auto;"></h5>
-                            </a>
-                        </div>
-                        
-
-                    </div>
-                </div>
-                <div th:each="feature : ${epic.getFeatureList()}"
-                     style="padding-left:2%;padding-right:2%;margin-top:1%">
-                    <div class="row" style="margin:0;height: 25px;">
-                        <div class="col-4">
-                            <a th:href="'/feature/details/'+${feature.id}" class="link">
-                                <h5 th:text="${feature.name}+ '  ('+${feature.status.displayName}+')'"></h5>
-                            </a>
-                        </div>
-                        <div class="col-3 offset-5" style="float: right;">
-<!--                            <a th:href="@{/tasks/create/{id}(id=${feature.id})}" style="float:right;">-->
-<!--                                <button class="btn btn-link" style="color:white;margin-top: -5px;">Create New-->
-<!--                                    Task-->
-<!--                                </button>-->
-<!--                            </a>-->
-                            <button  th:onclick="taskCreateModal([[${feature.id}]],[[${feature.name}]])" class="btn btn-link" style="color:white;margin-top: -5px;float:right;">Create New
+                    <div class="col-lg-2 col-lg-offset-10" style="float: right;">
+                        <a th:href="@{/projects/backlog/{id}(id=${project.id})}" style="float:right;">
+                            <button class="btn btn-link" style="color:white;">
+                                View Backlog
                                 Task
                             </button>
+                        </a>
+                    </div>
+                </div>
+                <div class="row" style="margin-top:-20px;display:flex;">
+                    <div class="col-lg-6 col-lg-offset-3">
+                        <a th:href="'/projects/details/'+${project.id}" class="link">
+                            <h4 th:text="${project.name}" style="text-align:center;margin-bottom: auto;"></h4>
+                        </a>
+                    </div>
+                </div>
+                <div class="row" style="margin: 1%;">
+                    <div class="col-lg-3 col-md-4 col-sm-5 col-xs-12">
+                        <form action="/kanban/statusEpic" method="post">
+                            <input type="hidden" name="projectId" th:value="${project.id}" readonly>
+                            <label style="font-size: 20px;">
+                                Select Epic Status
+                                <select name="status" class="form-control">
+                                    <option value="all">All</option>
+                                    <option th:each="item : ${statuses}" th:value=${item} th:text=${item.displayName}></option>
+                                </select>
+                            </label>
+                            <input type="submit" value="Search" class="btn btn-primary btn-outline-light"
+                                   style="height:35px;margin-left: 1%;margin-top: -5px;" />
+                        </form>
+                    </div>
+                    <div class="col-lg-9 col-md-8 col-sm-7 col-xs-12">
+                        <form action="/kanban/epic" method="post">
+                            <label style="font-size: 20px;">
+                                Select Epic
+                                <select name="epic" class="form-control">
+                                    <option th:each="item : ${epics}" th:value=${item.id} th:text=${item.name}></option>
+                                </select>
+                            </label>
+                            <input type="submit" value="Select" id="searchBtn" class="btn btn-primary btn-outline-light"
+                                   style="height:35px;margin-left: 1%;margin-top: -5px;" />
+                        </form>
+                    </div>
+
+                </div>
+                <div th:each="epic : ${epics}">
+                    <div style="border-bottom: 2px solid;">
+                        <div class="row" style="margin:0;height: 25px;">
+                            <div class="col-lg-4">
+                                <a th:href="'/epics/details/'+${epic.id}" class="link">
+                                    <h5 th:text="${epic.name}+ '  ('+${epic.status.displayName}+')'"
+                                        style="font-weight:bolder;"></h5>
+                                </a>
+                            </div>
+
+
                         </div>
                     </div>
-                    <div class="row"
-                         style="background-color: lightgray;margin: .1%;border-radius: 5px;padding-top: .5%;padding-bottom: 2%;">
-                        <div class="col-3">
-                            <table style="width:100%;">
-                                <tr style="border-bottom: 1px solid slategrey;">
-                                    <th style="text-align: center;color: black;font-size: 20px;font-weight: bold;">
-                                        Ready
-                                    </th>
-                                </tr>
-                                <tr th:each="item : ${feature.getReadyTask()}">
-                                    <td>
-                                        <div th:replace="fragments :: taskCard"></div>
-                                    </td>
-                                </tr>
-                            </table>
+                    <div th:each="feature : ${epic.getFeatureList()}"
+                         style="padding-left:2%;padding-right:2%;margin-top:1%">
+                        <div class="row" style="margin:0;height: 25px;">
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-9">
+                                <a th:href="'/feature/details/'+${feature.id}" class="link">
+                                    <h5 th:text="${feature.name}+ '  ('+${feature.status.displayName}+')'"></h5>
+                                </a>
+                            </div>
+                            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-3">
+                                <!--                            <a th:href="@{/tasks/create/{id}(id=${feature.id})}" style="float:right;">-->
+                                <!--                                <button class="btn btn-link" style="color:white;margin-top: -5px;">Create New-->
+                                <!--                                    Task-->
+                                <!--                                </button>-->
+                                <!--                            </a>-->
+                                <button th:onclick="taskCreateModal([[${feature.id}]],[[${feature.name}]])" class="btn btn-link" style="color:white;margin-top: -5px;float:right;">
+                                    Create New
+                                    Task
+                                </button>
+                            </div>
                         </div>
-                        <div class="col-3">
-                            <table style="width:100%;">
-                                <tr style="border-bottom: 1px solid slategrey;">
-                                    <th style="text-align: center;color: black;font-size: 20px;font-weight: bold;">
-                                        In-Progress
-                                    </th>
-                                </tr>
-                                <tr th:each="item : ${feature.getInProgressTask()}">
-                                    <td>
-                                        <div th:replace="fragments :: taskCard"></div>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div class="col-3">
-                            <table style="width:100%;">
-                                <tr style="border-bottom: 1px solid slategrey;">
-                                    <th style="text-align: center;color: black;font-size: 20px;font-weight: bold;">
-                                        In Testing
-                                    </th>
-                                </tr>
-                                <tr th:each="item : ${feature.getTestTask()}">
-                                    <td>
-                                        <div th:replace="fragments :: taskCard"></div>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div class="col-3">
-                            <table style="width:100%;">
-                                <tr style="border-bottom: 1px solid slategrey;">
-                                    <th style="text-align: center;color: black;font-size: 20px;font-weight: bold;">
-                                        Complete
-                                    </th>
-                                </tr>
-                                <tr th:each="item : ${feature.getCompleteTask()}">
-                                    <td>
-                                        <div th:replace="fragments :: taskCard"></div>
-                                    </td>
-                                </tr>
-                            </table>
+                        <div class="row"
+                             style="background-color: lightgray; margin-left: 0px; margin-right: 0px; margin-top: 5px; border-radius: 5px; padding-top: .5%; padding-bottom: 2%;">
+                            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                <table style="width:100%;">
+                                    <tr style="border-bottom: 1px solid slategrey;">
+                                        <th style="text-align: center;color: black;font-size: 20px;font-weight: bold;">
+                                            Ready
+                                        </th>
+                                    </tr>
+                                    <tr th:each="item : ${feature.getReadyTask()}">
+                                        <td>
+                                            <div th:replace="~{fragments :: taskCard}"></div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                <table style="width:100%;">
+                                    <tr style="border-bottom: 1px solid slategrey;">
+                                        <th style="text-align: center;color: black;font-size: 20px;font-weight: bold;">
+                                            In-Progress
+                                        </th>
+                                    </tr>
+                                    <tr th:each="item : ${feature.getInProgressTask()}">
+                                        <td>
+                                            <div th:replace="~{fragments :: taskCard}"></div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                <table style="width:100%;">
+                                    <tr style="border-bottom: 1px solid slategrey;">
+                                        <th style="text-align: center;color: black;font-size: 20px;font-weight: bold;">
+                                            In Testing
+                                        </th>
+                                    </tr>
+                                    <tr th:each="item : ${feature.getTestTask()}">
+                                        <td>
+                                            <div th:replace="~{fragments :: taskCard}"></div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                <table style="width:100%;">
+                                    <tr style="border-bottom: 1px solid slategrey;">
+                                        <th style="text-align: center;color: black;font-size: 20px;font-weight: bold;">
+                                            Complete
+                                        </th>
+                                    </tr>
+                                    <tr th:each="item : ${feature.getCompleteTask()}">
+                                        <td>
+                                            <div th:replace="~{fragments :: taskCard}"></div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
-
     </div>
-</div>
 
-<div th:replace="fragments :: taskEditModal"></div>
-<div th:replace="fragments :: taskNoteModal"></div>
-<div th:replace="fragments :: taskCreateModal"></div>
-<div th:replace="fragments :: fileCreateModal"></div>
-<div th:replace="fragments :: copyright"></div>
-<script th:src="@{/js/comment.js}"></script>
+    <div th:replace="~{fragments :: taskEditModal}"></div>
+    <div th:replace="~{fragments :: taskNoteModal}"></div>
+    <div th:replace="~{fragments :: taskCreateModal}"></div>
+    <div th:replace="~{fragments :: fileCreateModal}"></div>
+    <div th:replace="~{fragments :: copyright}"></div>
+    <script th:src="@{/js/comment.js}"></script>
 </body>
 
 </html>

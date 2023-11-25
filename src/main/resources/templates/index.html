@@ -4,23 +4,23 @@ created by: Jonathan Hays
  -->
 <html xmlns:th="http://www.thymeleaf.org/">
 
-<head th:replace="fragments :: head"></head>
+<head th:replace="~{fragments ::  head}"></head>
 
 <body>
 
     <div class="sticky-top">
-        <div th:replace="fragments :: pageTitle"></div>
-        <div th:replace="fragments :: navBar"></div>
+        <div th:replace="~{fragments :: pageTitle}"></div>
+        <div th:replace="~{fragments :: navBar}"></div>
     </div>
 
 
 <div class="container">
-    <div class="col-12" style="margin-top:1%">
+    <div class="col-lg-12" style="margin-top:1%">
         <h3 style="text-align:center;color:black;">Active Projects</h3>
     </div>
-    <div class="col-12 boxShadow backgroundColor" style="border-radius:10px;">
+    <div class="col-lg-12 boxShadow backgroundColor" style="border-radius:10px;">
     <div class="row" style="margin-top:3%">
-        <table class="table table-striped displayTable">
+        <table class="table  displayTable">
             <tr class="tableHeader">
 <!--                <th style="text-align:center;">ID</th>-->
                 <th>Name</th>
@@ -54,7 +54,7 @@ created by: Jonathan Hays
     </div>
 
 </div>
-<div th:replace="fragments :: copyright"></div>
+<div th:replace="~{fragments :: copyright}"></div>
 </body>
 
 </html>
