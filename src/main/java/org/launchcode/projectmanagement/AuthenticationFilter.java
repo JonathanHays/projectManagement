@@ -40,6 +40,7 @@ public class AuthenticationFilter implements HandlerInterceptor {
                              Object handler) throws IOException {
 
         // Don't require sign-in for whitelisted pages
+        System.out.println("TESTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT");
         if (isWhitelisted(request.getRequestURI())) {
             // returning true indicates that the request may proceed
             return true;
